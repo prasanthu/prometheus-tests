@@ -1,0 +1,16 @@
+version: "3.3"
+
+services:
+  prometheus:
+    image: "prom/prometheus"
+    volumes:
+      - "./prometheus.yml:/etc/prometheus/prometheus.yml"
+    ports:
+        - "9090:9090"
+  push-gateway:
+    image: "prom/pushgateway"
+    ports:
+        - "9091:9091"
+  my-test:
+    image: "ubuntu:18.04"
+    command: tail -F anything
