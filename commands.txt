@@ -1,3 +1,7 @@
 # sending metrics to push gateway
 # push gateway is exposing port 9091 in this setup
 echo "some_metric 3.14" | curl --data-binary @- http://localhost:9091/metrics/job/some_job
+
+
+#References
+1 http://opencapacity.co/news/2016/5/12/dev-talk-monitoring-with-prometheus-grafana-docker-part-1
