@@ -4,4 +4,5 @@ echo "some_metric 3.14" | curl --data-binary @- http://localhost:9091/metrics/jo
 
 
 #References
-1 http://opencapacity.co/news/2016/5/12/dev-talk-monitoring-with-prometheus-grafana-docker-part-1
+1  http://opencapacity.co/news/2016/5/12/dev-talk-monitoring-with-prometheus-grafana-docker-part-1
+2  http://opencapacity.co/news/2016/6/6/dev-talk-monitoring-with-prometheus-grafana-docker-part-2
