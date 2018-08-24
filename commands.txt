@@ -1,0 +1,34 @@
+gcloud container clusters \
+  create test-cluster --scopes=default,bigquery,datastore,pubsub,sql,storage-rw \
+  --num-nodes=3 \
+  --zone europe-west1-b
+
+kubectl create namespace monitoring
+
+kubectl create clusterrolebinding cluster-admin-binding --clusterrole cluster-admin --user $(gcloud config get-value account)
+
+# Some files are copied from https://github.com/bibinwilson/kubernetes-prometheus
+
+kubectl create -f clusterRole.yaml
+
+kubectl create -f config-map.yaml -n monitoring
+
+kubectl create -f prometheus.yaml --namespace=monitoring
+
+kubectl get pods --namespace=monitoring
+
+# Port forward the UI port for Prometheus
+# kubectl port-forward --namespace=monitoring <prometheus-deployment-668d94d8f5-p72h7> 8080:9092
+
+# Create a test server
+# Follow instructions in https://cloud.google.com/nodejs/docs/tutorials/bookshelf-on-kubernetes-engine
+
+kubectl create -f grafana.yaml -n monitoring
+
+kubectl create -f pushgateway.yaml
+
+# Test pushing to pushgateway
+# login to a pod running in default namespace.
+kubectl exec -it <bookshelf-frontend-58cc5dbc84-5scwh> -- bash
+# Push a metric to pushgateway:8080 (specified in the service declaration for pushgateway)
+echo "some_metric 4.71" | curl -v  --data-binary @- http://pushgateway:8080/metrics/job/some_job
